@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as fh:
     long_description = fh.read()
  
-setup(name='generativepy',
+setup(name='shape2d',
       version='0.0',
       url='https://github.com/martinmcbride/shape2d',
       license='MIT',

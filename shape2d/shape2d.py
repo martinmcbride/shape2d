@@ -62,16 +62,9 @@ class Vector(object):
     def __add__(self, other):
         return Vector(self.x + other.x, self.y + other.y)
 
-    def __radd__(self, other):
-        return self.__add__(self, other)
-
     def __sub__(self, other):
         # add the negative of `other`
         return self + (-other)
-
-    # def __rsub__(self, other):
-    #    # SomeNotVector - Vector IS NOT POSSIBLE
-    #    return NotImplemented
 
     def __mul__(self, other):
 
@@ -92,7 +85,14 @@ class Vector(object):
         else:
             return NotImplemented
 
-    __div__ = __truediv__
+    def __floordiv__(self, other):
+
+        # vector / scalar
+        if isinstance(other, (int, float)):
+            return Vector(self.x // other, self.y // other)
+        else:
+            return NotImplemented
+
 
     @property
     def x(self):
@@ -108,7 +108,7 @@ class Vector(object):
 
     @property
     def angle(self):
-        angle = math.atan(float(self.y) / self.x) * 180 / math.pi
+        angle = math.atan2(self.y, self.x)
         return angle
 
     @property

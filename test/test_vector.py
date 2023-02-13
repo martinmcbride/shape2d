@@ -41,9 +41,6 @@ class TestVector(unittest.TestCase):
         v = Vector(10, 20)
         l = list(v)
         self.assertEqual(l, [10, 20])
-        t = (10, 20)
-        for a, b in zip(l, t):
-            self.assertEqual(a, b)
 
     def test_len(self):
         v = Vector(0, 0)
@@ -69,10 +66,18 @@ class TestVector(unittest.TestCase):
         self.assertEqual(eq1, True)
         self.assertEqual(eq2, False)
 
+    def test_eq(self):
+        v1 = Vector(10, 20)
+        v2 = Vector(10, 20)
+        v3 = Vector(1, 20)
+        self.assertEqual(v1 == v2, True)
+        self.assertEqual(v1 == v3, False)
+
     def test_neg(self):
         v1 = Vector(10, 20)
         v2 = -v1
         self.assertEqual(v2, Vector(-10, -20))
+
     def test_add(self):
         v1 = Vector(10, 20)
         v2 = Vector(1, 2)
@@ -86,16 +91,20 @@ class TestVector(unittest.TestCase):
         self.assertEqual(v3, Vector(9, 18))
 
     def test_mul(self):
+        # mul
         v1 = Vector(10, 20)
         v2 = v1 * 2
         self.assertEqual(v2, Vector(20, 40))
+        #rmul
         v2 = -3 * v1
         self.assertEqual(v2, Vector(-30, -60))
 
     def test_div(self):
         v1 = Vector(10, 20)
+        # truediv
         v2 = v1 / 2
         self.assertEqual(v2, Vector(5, 10))
+        # floordiv
         v2 = v1 // 3
         self.assertEqual(v2, Vector(3, 6))
 
@@ -116,7 +125,7 @@ class TestVector(unittest.TestCase):
     def test_str(self):
         v = Vector(2, 5)
         s = str(v)
-        self.assertEqual(s, "Vector(2.000, 5.000)")
+        self.assertEqual(s, "Vector(2, 5)")
 
     def test_repr(self):
         v = Vector(math.sqrt(2), math.sqrt(5))

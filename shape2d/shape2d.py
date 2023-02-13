@@ -15,8 +15,104 @@ def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     """
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
+class Matrix():
+    """
+    Class to represent a 2D transform matrix:
+    | xx xy xt |
+    | yx yy yt |
+    """
 
-class Vector(object):
+    @staticmethod
+    def scale(scale_x, scale_y=None):
+        """
+        Create a scaling matrix
+        :param scale_x: Scale factor in x direction
+        :param scale_y: Scale factor in y direction, defaults to scale_x
+        :return: New matrix
+        """
+        return Matrix(scale_x, 0, 0, 0, scale_y, 0)
+
+    @staticmethod
+    def translate(x, y):
+        """
+        Create a translation matrix based on a length and angle
+        :param x: Scale factor in x direction
+        :param y: Scale factor in y direction
+        :return: New matrix
+        """
+        return Matrix(0, 0, x, 0, 0, y)
+
+    @staticmethod
+    def rotation(angle):
+        """
+        Create a rotation matrix
+        :param angle: Angle in radians, measured counterclockwise from positive x direction
+        :return: New matrix
+        """
+        c = math.cos(angle)
+        s = math.sin(angle)
+        return Matrix(c, -s, 0, s, c, 0)
+
+    def __init__(self, xx, xy, xt, yx, yy, yt):
+        self.matrix = (xx, xy, xt, yx, yy, yt)
+
+    def __iter__(self):
+        return iter(self.matrix)
+
+    def __len__(self):
+        return len(self.matrix)
+
+    def __getitem__(self, index):
+        return self.matrix[index]
+
+    def __eq__(self, other):
+        return all([isclose(a, b) for a, b in zip(self, other)])
+
+    def __neg__(self):
+        return self * -1
+
+    def __add__(self, other):
+        return Matrix(*[a + b for a, b in zip(self, other)])
+
+    def __sub__(self, other):
+        # add the negative of `other`
+        return self + (-other)
+
+    def __mul__(self, other):
+
+        # matrix * scalar
+        if isinstance(other, (int, float)):
+            return Matrix(*[other*a for a in self])
+        else:
+            return NotImplemented
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
+    def __truediv__(self, other):
+
+        # matrix / scalar
+        if isinstance(other, (int, float)):
+            return Matrix(*[a / other for a in self])
+        else:
+            return NotImplemented
+
+    def __floordiv__(self, other):
+
+        # matrix // scalar
+        if isinstance(other, (int, float)):
+            return Matrix(*[a // other for a in self])
+        else:
+            return NotImplemented
+
+    def __str__(self):
+        return "Matrix({0}, {1}, {2}, {3}, {4}, {5})".format(*self.matrix)
+
+    def __repr__(self):
+        return "Matrix({0}, {1}, {2}, {3}, {4}, {5})".format(*self.matrix)
+
+
+class Vector():
     """
     Class to represent a 2-vector including most of its common operations
     This is based on easy_vector https://github.com/DariusMontez/easy_vector
@@ -26,7 +122,7 @@ class Vector(object):
     @staticmethod
     def polar(length, angle):
         """
-        Create a vector based on a length and ag;e
+        Create a vector based on a length and angle
         :param length: Lengh of vector
         :param angle: Angle in radians, measured counterclockwise from positive x direction
         :return: New vecto
@@ -117,7 +213,7 @@ class Vector(object):
 
     # String representation
     def __str__(self):
-        return "Vector({0:.3f}, {1:.3f})".format(self.x, self.y)
+        return "Vector({0}, {1})".format(self.x, self.y)
 
     def __repr__(self):
         return "Vector({0}, {1})".format(self.x, self.y)

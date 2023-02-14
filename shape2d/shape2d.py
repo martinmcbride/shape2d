@@ -30,6 +30,8 @@ class Matrix():
         :param scale_y: Scale factor in y direction, defaults to scale_x
         :return: New matrix
         """
+        if scale_y is None:
+            scale_y = scale_x
         return Matrix(scale_x, 0, 0, 0, scale_y, 0)
 
     @staticmethod
@@ -43,7 +45,7 @@ class Matrix():
         return Matrix(0, 0, x, 0, 0, y)
 
     @staticmethod
-    def rotation(angle):
+    def rotate(angle):
         """
         Create a rotation matrix
         :param angle: Angle in radians, measured counterclockwise from positive x direction
@@ -168,6 +170,18 @@ class Vector():
             self.coords = tuple(args)
         else:
             raise ValueError("Vector requires a sequence of length 2, or 2 numbers")
+
+    def transform(self, m):
+        return m*self
+
+    def scale(self, scale_x, scale_y=0):
+        return Matrix.scale(scale_x, scale_y)*self
+
+    def translate(self, x, y):
+        return Matrix.translate(x, y)*self
+
+    def rotate(self, angle):
+        return Matrix.rotate(angle)*self
 
     def __iter__(self):
         return iter(self.coords)

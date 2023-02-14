@@ -3,8 +3,6 @@ import math
 
 from shape2d.shape2d import Matrix
 
-# ({{2, 3, 4}, {5, 6, 7}, {0, 0, 1}})*({{20, 30, 40}, {50, 60, 70}, {0, 0, 1}})=({{190, 240, 294}, {400, 510, 627}, {0, 0, 1}})
-
 class TestMatrix(unittest.TestCase):
 
     def test_create_from_numbers(self):

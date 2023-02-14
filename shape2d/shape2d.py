@@ -35,9 +35,9 @@ class Matrix():
     @staticmethod
     def translate(x, y):
         """
-        Create a translation matrix based on a length and angle
-        :param x: Scale factor in x direction
-        :param y: Scale factor in y direction
+        Create a translation matrix
+        :param x: Translation in x direction
+        :param y: Translation in y direction
         :return: New matrix
         """
         return Matrix(0, 0, x, 0, 0, y)
@@ -52,6 +52,23 @@ class Matrix():
         c = math.cos(angle)
         s = math.sin(angle)
         return Matrix(c, -s, 0, s, c, 0)
+
+    @staticmethod
+    def multiply(p, q):
+        """
+        Multiply two matrices
+        :param a: First matrix
+        :param b: Second matrix
+        :return: New matrix
+        """
+        a = p[0]*q[0] + p[1]*q[3]
+        b = p[0]*q[1] + p[1]*q[4]
+        c = p[0]*q[2] + p[1]*q[5] + p[2]
+        d = p[3]*q[0] + p[4]*q[3]
+        e = p[3]*q[1] + p[4]*q[4]
+        f = p[3]*q[2] + p[4]*q[5] + p[5]
+        return Matrix(a, b, c, d, e, f)
+
 
     def __init__(self, xx, xy, xt, yx, yy, yt):
         self.matrix = (xx, xy, xt, yx, yy, yt)
@@ -84,7 +101,7 @@ class Matrix():
         if isinstance(other, (int, float)):
             return Matrix(*[other*a for a in self])
         else:
-            return NotImplemented
+            return Matrix.multiply(self, other)
 
     def __rmul__(self, other):
         return self.__mul__(other)

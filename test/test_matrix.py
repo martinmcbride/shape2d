@@ -76,7 +76,7 @@ class TestMatrix(unittest.TestCase):
     def test_mul_matrix(self):
         m1 = Matrix(2, 3, 4, 5, 6, 7)
         m2 = Matrix(20, 30, 40, 50, 60, 70)
-        self.assertEqual(m1*m2, Matrix(10, 15, 20, 25, 30, 35))
+        self.assertEqual(m1*m2, Matrix(190, 240, 294, 400, 510, 627))
 
     def test_div(self):
         m1 = Matrix(20, 30, 40, 50, 60, 70)
@@ -84,4 +84,9 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(m1/20, Matrix(1.0, 1.5, 2.0, 2.5, 3.0, 3.5))
         # floordiv
         self.assertEqual(m1//20, Matrix(1, 1, 2, 2, 3, 3))
+
+    def test_static_multiply(self):
+        m1 = Matrix(2, 3, 4, 5, 6, 7)
+        m2 = Matrix(20, 30, 40, 50, 60, 70)
+        self.assertEqual(Matrix.multiply(m1, m2), Matrix(190, 240, 294, 400, 510, 627))
 

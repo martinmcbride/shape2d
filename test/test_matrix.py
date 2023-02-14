@@ -88,3 +88,15 @@ class TestMatrix(unittest.TestCase):
         m2 = Matrix(20, 30, 40, 50, 60, 70)
         self.assertEqual(Matrix.multiply(m1, m2), Matrix(190, 240, 294, 400, 510, 627))
 
+    def test_static_scale(self):
+        m = Matrix.scale(2)
+        self.assertEqual(m, Matrix(2, 0, 0, 0, 2, 0))
+
+    def test_static_translate(self):
+        m = Matrix.translate(10, 20)
+        self.assertEqual(m, Matrix(0, 0, 10, 0, 0, 20))
+
+    def test_static_rotate(self):
+        m = Matrix.rotate(math.radians(30))
+        self.assertEqual(m==Matrix(0.8660254037, -0.5, 0, 0.5, 0.8660254037, 0), True)
+

@@ -1,7 +1,7 @@
 import unittest
 import math
 
-from shape2d.shape2d import Vector
+from shape2d.shape2d import Vector, Matrix
 
 
 class TestVector(unittest.TestCase):
@@ -36,6 +36,11 @@ class TestVector(unittest.TestCase):
         v = Vector.polar(3, -math.radians(45))
         self.assertAlmostEqual(v.x, 2.121320344)
         self.assertAlmostEqual(v.y, -2.121320344)
+
+    def test_static_matrix_premultiply(self):
+        m = Matrix(2, 3, 4, 5, 6, 7)
+        v = Vector(20, 30)
+        self.assertEqual(Vector.matrix_premultiply(m, v), Vector(134, 287))
 
     def test_iter(self):
         v = Vector(10, 20)
@@ -98,6 +103,11 @@ class TestVector(unittest.TestCase):
         #rmul
         v2 = -3 * v1
         self.assertEqual(v2, Vector(-30, -60))
+
+    def test_matrix_mul(self):
+        m = Matrix(2, 3, 4, 5, 6, 7)
+        v = Vector(20, 30)
+        self.assertEqual(m*v, Vector(134, 287))
 
     def test_div(self):
         v1 = Vector(10, 20)

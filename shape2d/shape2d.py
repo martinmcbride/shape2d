@@ -96,12 +96,12 @@ class Matrix():
         return self + (-other)
 
     def __mul__(self, other):
-
         # matrix * scalar
         if isinstance(other, (int, float)):
             return Matrix(*[other*a for a in self])
-        else:
+        if isinstance(other, Matrix):
             return Matrix.multiply(self, other)
+        return NotImplemented
 
     def __rmul__(self, other):
         return self.__mul__(other)
@@ -140,13 +140,25 @@ class Vector():
     def polar(length, angle):
         """
         Create a vector based on a length and angle
-        :param length: Lengh of vector
+        :param length: Length of vector
         :param angle: Angle in radians, measured counterclockwise from positive x direction
-        :return: New vecto
+        :return: New vector
         """
         x = length * math.cos(angle)
         y = length * math.sin(angle)
         return Vector(x, y)
+
+    @staticmethod
+    def matrix_premultiply(m, v):
+        """
+        Multiply a matrix (first) and a vector (second)
+        :param m: matrix
+        :param v: vector
+        :return: New vector
+        """
+        a = m[0]*v[0] + m[1]*v[1] + m[2]
+        b = m[3]*v[0] + m[4]*v[1] + m[5]
+        return Vector(a, b)
 
     def __init__(self, *args):
         # first arg may be an iterable (list, tuple, etc...)
@@ -184,11 +196,15 @@ class Vector():
         # vector * scalar
         if isinstance(other, (int, float)):
             return Vector(other * self.x, other * self.y)
-        else:
-            return NotImplemented
+        return NotImplemented
 
     def __rmul__(self, other):
-        return self.__mul__(other)
+        if isinstance(other, (int, float)):
+            return self.__mul__(other)
+        if isinstance(other, Matrix):
+            return Vector.matrix_premultiply(other, self)
+        return NotImplemented
+
 
     def __truediv__(self, other):
 
